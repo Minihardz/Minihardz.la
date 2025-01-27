@@ -23,7 +23,7 @@ toggleButton.Size = UDim2.new(0, 50, 0, 50)
 toggleButton.Position = UDim2.new(0.5, -25, 0.5, -125)
 toggleButton.Text = "ปิด"
 toggleButton.BackgroundColor3 = Color3.fromRGB(255, 0, 0)
-toggleButton.Parent = screenGui
+toggleButton.Parent = speedFrame
 
 -- สร้างปุ่มติ๊กเลือกเพิ่มความเร็ว
 speedCheckButton.Size = UDim2.new(0, 100, 0, 50)
@@ -51,6 +51,19 @@ sliderButton.Position = UDim2.new(0, 0, 0, 0)
 sliderButton.BackgroundColor3 = Color3.fromRGB(0, 0, 255)
 sliderButton.Parent = speedSlider
 
+-- ฟังก์ชันปิดและเปิดหน้าต่าง
+local isWindowOpen = true  -- ใช้ในการตรวจสอบว่าเปิดหรือปิดอยู่
+toggleButton.MouseButton1Click:Connect(function()
+    if isWindowOpen then
+        speedFrame.Visible = false  -- ปิดหน้าต่าง
+        toggleButton.Text = "เปิด"  -- เปลี่ยนข้อความของปุ่ม
+    else
+        speedFrame.Visible = true  -- เปิดหน้าต่าง
+        toggleButton.Text = "ปิด"  -- เปลี่ยนข้อความของปุ่ม
+    end
+    isWindowOpen = not isWindowOpen  -- สลับสถานะเปิด/ปิด
+end)
+
 -- ปรับความเร็วเมื่อเลื่อนปุ่ม
 sliderButton.MouseDrag:Connect(function()
     local x = math.clamp(sliderButton.Position.X.Offset, 0, speedSlider.Size.X.Offset - sliderButton.Size.X.Offset)
@@ -67,23 +80,11 @@ speedCheckButton.MouseButton1Click:Connect(function()
     if isSpeedActive then
         speedCheckButton.Text = "หยุดเพิ่มความเร็ว"
         -- ทำให้ตัวละครวิ่งเร็วขึ้น
-        game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = 50 + (sliderButton.Position.X.Offset / (speedSlider.Size.X.Offset - sliderButton.Size.X.Offset) * 100)
+        local speed = sliderButton.Position.X.Offset / (speedSlider.Size.X.Offset - sliderButton.Size.X.Offset) * 100
+        game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = 16 + speed  -- เพิ่มความเร็ว
     else
         speedCheckButton.Text = "เพิ่มความเร็ว"
         -- รีเซ็ตความเร็ว
-        game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = 16
+        game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = 16  -- ค่าเริ่มต้น
     end
-end)
-
--- ฟังก์ชันปิดและเปิดหน้าต่าง
-local isWindowOpen = true  -- ใช้ในการตรวจสอบว่าเปิดหรือปิดอยู่
-toggleButton.MouseButton1Click:Connect(function()
-    if isWindowOpen then
-        speedFrame.Visible = false  -- ปิดหน้าต่าง
-        toggleButton.Text = "เปิด"  -- เปลี่ยนข้อความของปุ่ม
-    else
-        speedFrame.Visible = true  -- เปิดหน้าต่าง
-        toggleButton.Text = "ปิด"  -- เปลี่ยนข้อความของปุ่ม
-    end
-    isWindowOpen = not isWindowOpen  -- สลับสถานะเปิด/ปิด
 end)
