@@ -1,4 +1,3 @@
--- สร้าง GUI ที่จะมีสี่เหลี่ยมและปุ่มสำหรับเพิ่มความเร็ว
 local speedFrame = Instance.new("Frame")
 local toggleButton = Instance.new("TextButton")  -- ปุ่มปิดเปิดหน้าต่าง
 local speedSlider = Instance.new("Frame")  -- สร้างกรอบสำหรับเลื่อนความเร็ว
@@ -23,7 +22,7 @@ toggleButton.Size = UDim2.new(0, 50, 0, 50)
 toggleButton.Position = UDim2.new(0.5, -25, 0.5, -125)
 toggleButton.Text = "ปิด"
 toggleButton.BackgroundColor3 = Color3.fromRGB(255, 0, 0)
-toggleButton.Parent = speedFrame
+toggleButton.Parent = screenGui -- เปลี่ยนให้เป็น parent ของ screenGui เพื่อให้กดได้ง่ายขึ้น
 
 -- สร้างปุ่มติ๊กเลือกเพิ่มความเร็ว
 speedCheckButton.Size = UDim2.new(0, 100, 0, 50)
@@ -86,31 +85,5 @@ speedCheckButton.MouseButton1Click:Connect(function()
         speedCheckButton.Text = "เพิ่มความเร็ว"
         -- รีเซ็ตความเร็ว
         game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = 16  -- ค่าเริ่มต้น
-    end
-end)
-
--- ฟังก์ชันเพิ่มความเร็วให้ตัวละครขณะเดิน
-game:GetService("RunService").Heartbeat:Connect(function()
-    if isSpeedActive then
-        local speed = sliderButton.Position.X.Offset / (speedSlider.Size.X.Offset - sliderButton.Size.X.Offset) * 100
-        game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = 16 + speed
-    end
-end)
-
--- เพิ่มฟังก์ชันการแสดงข้อความขณะใช้ความเร็ว
-local speedInfoLabel = Instance.new("TextLabel")
-speedInfoLabel.Size = UDim2.new(0, 300, 0, 50)
-speedInfoLabel.Position = UDim2.new(0.5, -150, 0.8, 0)
-speedInfoLabel.Text = "เริ่มใช้ความเร็ว!"
-speedInfoLabel.BackgroundColor3 = Color3.fromRGB(0, 255, 255)
-speedInfoLabel.TextColor3 = Color3.fromRGB(0, 0, 0)
-speedInfoLabel.Parent = screenGui
-
--- เมื่อเปิด/ปิดความเร็ว แสดงข้อความ
-speedCheckButton.MouseButton1Click:Connect(function()
-    if isSpeedActive then
-        speedInfoLabel.Text = "ใช้ความเร็วแล้ว!"
-    else
-        speedInfoLabel.Text = "หยุดใช้ความเร็ว!"
     end
 end)
